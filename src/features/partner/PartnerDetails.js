@@ -1,12 +1,13 @@
-import { Button, Col, Modal, Row, Form, Input } from "antd";
+import { Button, Col, Modal, Row, Form, Input, Select } from "antd";
 import ProductCard from "components/ProductCard";
 import ProductCartItem from "./ProductCartItem";
-import { selectPartnerById, selectProductsByPartnerId } from "./partnerSlice";
-import React, { useState } from "react";
+import { fetchDistricts, fetchProvinces, fetchWards, selectDistricts, selectIsFetchingDistricts, selectIsFetchingProvinces, selectIsFetchingWards, selectPartnerById, selectProductsByPartnerId, selectProvinces, selectWards } from "./partnerSlice";
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import styles from './Partner.module.scss';
 import { addToCart, selectCartItems } from "features/cart/cartSlice";
+import { isValidArray } from "utils";
 
 const { TextArea } = Input;
 
@@ -17,10 +18,20 @@ const PartnerDetails = () => {
 
   const [isCartModalVisible, setIsCartModalVisible] = useState(false);
   const [isCheckoutModalVisible, setIsCheckoutModalVisible] = useState(false);
+  const [disableLocation, setDisableLocation] = useState({
+    disableDistricts: true,
+    disableWards: true
+  })
 
   const partner = useSelector((state) => selectPartnerById(state, Number(partnerId)));
   const products = useSelector(selectProductsByPartnerId);
   const productsFromCart = useSelector(selectCartItems);
+  const provinces = useSelector(selectProvinces);
+  const districts = useSelector(selectDistricts);
+  const wards = useSelector(selectWards);
+  const isFetchingProvinces = useSelector(selectIsFetchingProvinces);
+  const isFetchingDistricts = useSelector(selectIsFetchingDistricts);
+  const isFetchingWards = useSelector(selectIsFetchingWards);
 
   const handleCartOk = () => {
     setIsCartModalVisible(false);
@@ -42,6 +53,22 @@ const PartnerDetails = () => {
 
   const handleAddToCart = (values) => {
     dispatch(addToCart(values));
+  }
+
+  const handleChangeProvince = (provinceCode) => {
+    dispatch(fetchDistricts(provinceCode));
+    setDisableLocation((prevState) => ({
+      ...prevState,
+      disableDistricts: false
+    }));
+  }
+
+  const handleChangeDistrict = (districtCode) => {
+    dispatch(fetchWards(districtCode));
+    setDisableLocation((prevState) => ({
+      ...prevState,
+      disableWards: false
+    }));
   }
 
   const renderCartModalFooter = () => (
@@ -94,8 +121,73 @@ const PartnerDetails = () => {
       <Form.Item label="Địa chỉ">
         <Input />
       </Form.Item>
-      <Form.Item label="Toà nhà hoặc lầu">
-        <Input />
+      <Form.Item label="Tỉnh">
+        <Select
+          onChange={handleChangeProvince}
+          disabled={isFetchingProvinces}
+        >
+          {
+            isValidArray(provinces) && provinces.map((province) =>
+              <Select.Option
+                key={province.code}
+                value={province.code}
+              >
+                {province.name}
+              </Select.Option>
+            )
+          }
+        </Select>
+      </Form.Item>
+      <Form.Item
+        label="Huyện"
+        style={{
+          display: 'inline-block',
+          width: 'calc(50% - 10px)',
+          marginRight: '10px',
+        }}
+      >
+        <Select
+          onChange={handleChangeDistrict}
+          disabled={
+            disableLocation.disableDistricts || isFetchingDistricts
+          }
+        >
+          {
+            isValidArray(districts) && districts.map((district) =>
+              <Select.Option
+                key={district.code}
+                value={district.code}
+              >
+                {district.name}
+              </Select.Option>
+            )
+          }
+        </Select>
+      </Form.Item>
+      <Form.Item
+        label="Xã"
+        style={{
+          display: 'inline-block',
+          width: 'calc(50%)',
+          margin: '0',
+        }}
+      >
+        <Select
+          disabled={
+            disableLocation.disableWards || isFetchingWards
+          }
+        >
+          {
+            isValidArray(wards) && wards.map((ward) =>
+              <Select.Option
+                key={ward.code}
+                value={ward.code}
+              >
+                {ward.name}
+              </Select.Option>
+            )
+          }
+        </Select>
       </Form.Item>
       <Form.Item label="Ghi chú">
         <TextArea rows={4} />
@@ -109,6 +201,10 @@ const PartnerDetails = () => {
       </Form.Item>
     </Form>
   );
+
+  useEffect(() => {
+    dispatch(fetchProvinces());
+  }, [dispatch]);
 
   if (!partner) {
     return (

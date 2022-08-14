@@ -1,4 +1,29 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import provincesApi from 'api/provincesApi';
+
+export const fetchProvinces = createAsyncThunk(
+  'partner/fetchProvinces',
+  async () => {
+    const response = await provincesApi.listProvinces();
+    return response.data;
+  }
+);
+
+export const fetchDistricts = createAsyncThunk(
+  'partner/fetchDistricts',
+  async (provinceCode) => {
+    const response = await provincesApi.getDistricts(provinceCode);
+    return response.data;
+  }
+);
+
+export const fetchWards = createAsyncThunk(
+  'partner/fetchWards',
+  async (districtCode) => {
+    const response = await provincesApi.getWards(districtCode);
+    return response.data;
+  }
+);
 
 const initialState = {
   data: [
@@ -65,12 +90,54 @@ const initialState = {
       inStock: 50
     }
   ],
+  provinces: [],
+  districts: [],
+  wards: [],
+  isFetchingProvinces: false,
+  isFetchingDistricts: false,
+  isFetchingWards: false,
 };
 
 export const partnerSlice = createSlice({
   name: 'partner',
   initialState: initialState,
-  reducers: {}
+  reducers: {},
+  extraReducers: (builder) => {
+    builder.addCase(fetchProvinces.pending, (state) => {
+      state.isFetchingProvinces = true;
+    });
+    builder.addCase(fetchProvinces.fulfilled, (state, { payload }) => {
+      state.isFetchingProvinces = false;
+      state.provinces = payload;
+    });
+    builder.addCase(fetchProvinces.rejected, (state) => {
+      state.isFetchingProvinces = false;
+    });
+    builder.addCase(fetchDistricts.pending, (state) => {
+      state.isFetchingDistricts = true;
+      state.wards = [];
+    });
+    builder.addCase(fetchDistricts.fulfilled, (state, { payload }) => {
+      const { districts } = payload;
+      state.isFetchingDistricts = false;
+      state.districts = districts;
+    });
+    builder.addCase(fetchDistricts.rejected, (state) => {
+      state.isFetchingDistricts = false;
+    });
+    builder.addCase(fetchWards.pending, (state) => {
+      state.isFetchingWards = true;
+      state.wards = [];
+    });
+    builder.addCase(fetchWards.fulfilled, (state, { payload }) => {
+      const { wards } = payload;
+      state.isFetchingWards = false;
+      state.wards = wards;
+    });
+    builder.addCase(fetchWards.rejected, (state) => {
+      state.isFetchingWards = false;
+    });
+  },
 });
 
 export const selectAllPartners = (state) => state.partner.data;
@@ -78,6 +145,14 @@ export const selectAllPartners = (state) => state.partner.data;
 export const selectPartnerById = (state, partnerId) => 
   state.partner.data.find((partner) => partner.id === partnerId);
 
-  export const selectProductsByPartnerId = (state) => state.partner.products;
+export const selectProductsByPartnerId = (state) => state.partner.products;
+
+export const selectProvinces = (state) => state.partner.provinces;
+export const selectDistricts = (state) => state.partner.districts;
+export const selectWards = (state) => state.partner.wards;
+
+export const selectIsFetchingProvinces = (state) => state.partner.isFetchingProvinces;
+export const selectIsFetchingDistricts = (state) => state.partner.isFetchingDistricts;
+export const selectIsFetchingWards = (state) => state.partner.isFetchingWards;
 
 export default partnerSlice.reducer;
