@@ -1,0 +1,5 @@
+@import './mixins';
+
+@include fontFace('SF UI Text', '../fonts/SFUIText-Regular.woff', 400);
+@include fontFace('SF UI Text', '../fonts/SFUIText-Medium.woff', 500);
+@include fontFace('SF UI Text', '../fonts/SFUIText-Bold.woff', 700);

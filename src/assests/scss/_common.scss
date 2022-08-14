@@ -1,0 +1,21 @@
+.app {
+  min-height: 100vh;
+  background-color: #fff;
+  font-family: "Nunito", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.link--normalize {
+  color: #fff;
+  text-decoration: none;
+
+  &:hover {
+    color: #fff;
+  }
+}
+
+.full-width-button {
+  width: 100%;
+  margin-bottom: 12px;
+}

@@ -1,0 +1,13 @@
+.sticky-payment-form {
+  position: sticky;
+  top: 18%;
+}
+
+.cart {
+  &--no-items {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+}

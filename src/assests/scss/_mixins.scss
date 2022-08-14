@@ -1,0 +1,36 @@
+@mixin contentContainer($max-w: $--max-width-main-layout) {
+  margin: 0 auto;
+  width: 100%;
+  max-width: $max-w;
+}
+
+@mixin setFont($size, $weight: 400, $height: 1, $color: #2b2b2b) {
+  font-size: $size;
+  font-weight: $weight;
+  line-height: $height;
+  color: $color;
+}
+
+@mixin limitTextLines($lines: 2) {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: $lines;
+  -webkit-box-orient: vertical;
+}
+
+@mixin flexbox($align: flex-start, $justify: flex-start, $wrap: wrap) {
+  display: flex;
+  align-items: $align;
+  justify-content: $justify;
+  flex-wrap: $wrap;
+}
+
+@mixin fontFace($family, $path, $weight: null, $style: normal) {
+  @font-face {
+    font-family: $family;
+    font-style: $style;
+    font-weight: $weight;
+    src: url("#{$path}.woff") format("woff");
+  }
+}
