@@ -1,4 +1,4 @@
-import { Button, Col, Modal, Row, Form, Input, Select } from "antd";
+import { Button, Col, Modal, Row, Form, Input, Select, Result } from "antd";
 import ProductCard from "components/ProductCard";
 import ProductCartItem from "./ProductCartItem";
 import { fetchDistricts, fetchProvinces, fetchWards, selectDistricts, selectIsFetchingDistricts, selectIsFetchingProvinces, selectIsFetchingWards, selectPartnerById, selectProductsByPartnerId, selectProvinces, selectWards } from "./partnerSlice";
@@ -21,7 +21,8 @@ const PartnerDetails = () => {
   const [disableLocation, setDisableLocation] = useState({
     disableDistricts: true,
     disableWards: true
-  })
+  });
+  const [showResult, setShowResult] = useState(false);
 
   const partner = useSelector((state) => selectPartnerById(state, Number(partnerId)));
   const products = useSelector(selectProductsByPartnerId);
@@ -43,8 +44,8 @@ const PartnerDetails = () => {
   };
 
   const handleCheckoutOk = () => {
-    setIsCartModalVisible(false);
-    setIsCheckoutModalVisible(true);
+    setIsCheckoutModalVisible(false);
+    setShowResult(true);
   };
 
   const handleCheckoutCancel = () => {
@@ -274,6 +275,24 @@ const PartnerDetails = () => {
         }}
       >
         {renderCheckoutModalContent()}
+      </Modal>
+
+      <Modal
+        visible={showResult}
+        footer={null}
+        onCancel={() => setShowResult(false)}
+      >
+        <Result
+          status="success"
+          title="Đặt hàng thành công"
+          subTitle="Đơn hàng đã được tiếp nhận và đang được xử lý. Cảm ơn quý khách."
+          extra={[
+            <Button type="primary" key="console">
+              Quay lại
+            </Button>,
+            <Button key="buy">Mua lại</Button>,
+          ]}
+        />
       </Modal>
 
       <div className={styles["bottom-container"]}>

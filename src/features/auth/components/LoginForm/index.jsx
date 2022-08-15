@@ -8,6 +8,25 @@ import { Redirect, useHistory } from "react-router-dom";
 
 const { Option } = Select;
 
+const formItemLayout = {
+  labelCol: {
+    xs: {
+      span: 24,
+    },
+    sm: {
+      span: 8,
+    },
+  },
+  wrapperCol: {
+    xs: {
+      span: 24,
+    },
+    sm: {
+      span: 10,
+    },
+  },
+};
+
 const LoginForm = () => {
   const [form] = Form.useForm();
   const history = useHistory();
@@ -44,11 +63,13 @@ const LoginForm = () => {
 
   return (
     <Form
+      {...formItemLayout}
       form={form}
       onFinish={handleFinish}
       layout={"vertical"}
       name="login-form"
       autoComplete="off"
+      scrollToFirstError
     >
       <Form.Item
         label="Email"
