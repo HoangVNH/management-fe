@@ -20,6 +20,7 @@ const MainLayout = () => {
         className="site-layout"
         style={{
           marginLeft: 200,
+          background: '#fff'
         }}
       >
         <Header />

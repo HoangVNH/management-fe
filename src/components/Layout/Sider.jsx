@@ -1,34 +1,79 @@
 import {
-  AppstoreOutlined,
-  BarChartOutlined,
   CloudOutlined,
-  ShopOutlined,
-  TeamOutlined,
-  UploadOutlined,
   UserOutlined,
-  VideoCameraOutlined,
 } from '@ant-design/icons';
 import { Layout, Menu } from "antd";
+import { selectUserRole } from 'features/auth/authSlice';
 import React from 'react';
+import { useSelector } from 'react-redux';
+import { Link, useHistory } from 'react-router-dom';
 
 const { Sider } = Layout;
 
-const items = [
-  UserOutlined,
-  VideoCameraOutlined,
-  UploadOutlined,
-  BarChartOutlined,
-  CloudOutlined,
-  AppstoreOutlined,
-  TeamOutlined,
-  ShopOutlined,
-].map((icon, index) => ({
-  key: String(index + 1),
-  icon: React.createElement(icon),
-  label: `nav ${index + 1}`,
-}));
+const customerMenuItems = [
+  {
+    icon: UserOutlined,
+    label: 'Đối tác',
+    link: '/'
+  },
+  {
+    icon: CloudOutlined,
+    label: 'Lịch sử mua hàng',
+    link: '/orders'
+  }
+];
+
+const partnerMenuItems = [
+  {
+    icon: UserOutlined,
+    label: 'Chi nhánh',
+    link: '/'
+  },
+  {
+    icon: CloudOutlined,
+    label: 'Lịch sử mua hàng',
+    link: '/orders'
+  }
+]
+
+const renderMenuItems = (userRole) => {
+  let content = customerMenuItems;
+
+  return content.map((item, index) => ({
+    key: String(index + 1),
+    icon: React.createElement(item.icon),
+    label: 
+      <Link to={item.link}>
+        {item.label}
+      </Link>
+  }));
+}
+
+// const menuItems = [
+//   {
+//     icon: UserOutlined,
+//     label: 'Đối tác',
+//     link: '/'
+//   },
+//   {
+//     icon: CloudOutlined,
+//     label: 'Lịch sử mua hàng',
+//     link: '/orders'
+//   }
+// ].map((item, index) => ({
+//   key: String(index + 1),
+//   icon: React.createElement(item.icon),
+//   label: 
+//     <Link to={item.link}>
+//       {item.label}
+//     </Link>
+// }));
 
 const MySider = () => {
+  const history = useHistory();
+  const userRole = useSelector(selectUserRole);
+  const renderedMenu = renderMenuItems(userRole);
+
   return (
     <Sider
       style={{
@@ -40,8 +85,13 @@ const MySider = () => {
         bottom: 0,
       }}
     >
-      <div className="logo" />
-      <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']} items={items} />
+      <div
+        className="logo"
+        style={{
+          cursor: 'pointer'
+        }}
+        onClick={() => history.push('/')} />
+      <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']} items={renderedMenu} />
     </Sider>
   )
 };

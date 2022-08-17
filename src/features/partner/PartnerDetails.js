@@ -4,7 +4,7 @@ import ProductCartItem from "./ProductCartItem";
 import { fetchDistricts, fetchProvinces, fetchWards, selectDistricts, selectIsFetchingDistricts, selectIsFetchingProvinces, selectIsFetchingWards, selectPartnerById, selectProductsByPartnerId, selectProvinces, selectWards } from "./partnerSlice";
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import styles from './Partner.module.scss';
 import { addToCart, selectCartItems } from "features/cart/cartSlice";
 import { isValidArray } from "utils";
@@ -14,6 +14,7 @@ const { TextArea } = Input;
 const PartnerDetails = () => {
   const { partnerId } = useParams();
   const dispatch = useDispatch();
+  const history = useHistory();
   const [form] = Form.useForm();
 
   const [isCartModalVisible, setIsCartModalVisible] = useState(false);
@@ -230,7 +231,7 @@ const PartnerDetails = () => {
         </div>
       </div>
 
-      <Row className="product-wrapper" gutter={[0, 16]}>
+      <Row gutter={[0, 16]}>
         {
           products.map(product => (
             <Col
@@ -296,6 +297,11 @@ const PartnerDetails = () => {
       </Modal>
 
       <div className={styles["bottom-container"]}>
+        <Button
+          onClick={() => history.goBack()}
+        >
+          Quay lại
+        </Button>
         <Button
           type="primary"
           onClick={
