@@ -1,9 +1,9 @@
 import { Button, Card } from "antd";
 import React from "react";
-import ImageWithFallBack from "../ImageWithFallback";
-import PropTypes from "prop-types";
-import Utils from "components/UIKit/Utils";
+
+import Utils from "../UIKit/Utils";
 import "./styles.scss";
+import PropTypes from "prop-types";
 
 // const ProductCard = ({
 //   id,
@@ -44,32 +44,7 @@ import "./styles.scss";
 //   );
 // };
 
-// ProductCard.propTypes = {
-//   id: PropTypes.number.isRequired,
-//   name: PropTypes.string.isRequired,
-//   smallImage: PropTypes.string,
-//   price: PropTypes.number.isRequired,
-//   discount: PropTypes.number,
-//   className: PropTypes.string,
-//   style: PropTypes.shape({}),
-//   onAddToCart: PropTypes.func.isRequired,
-// };
-
-// ProductCard.defaultProps = {
-//   smallImage: "",
-//   discount: 0,
-//   className: "",
-//   style: {},
-// };
-
-const ProductCard = ({
-  id,
-  name,
-  price,
-  className,
-  style,
-  onClick
-}) => {
+const ProductCard = ({ id, name, price, className, style, onClick }) => {
   return (
     <Card
       hoverable
@@ -83,14 +58,32 @@ const ProductCard = ({
             {Utils.Money({ price })}
           </span>
         </div>
-        <Button className="product-card__button" onClick={() => {
-          onClick({ id, name, price });
-        }}>
+        <Button
+          className="product-card__button"
+          onClick={() => {
+            onClick({ id, name, price });
+          }}
+        >
           Thêm vào giỏ
         </Button>
       </div>
     </Card>
   );
+};
+
+ProductCard.propTypes = {
+  id: PropTypes.number.isRequired,
+  name: PropTypes.string.isRequired,
+  price: PropTypes.number.isRequired,
+  discount: PropTypes.number,
+  className: PropTypes.string,
+  style: PropTypes.shape({}),
+  onClick: PropTypes.func.isRequired,
+};
+
+ProductCard.defaultProps = {
+  className: "",
+  style: {},
 };
 
 export default ProductCard;

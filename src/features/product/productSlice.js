@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import productApi from "api/productApi";
-import { NotifyHelper } from "helper/notify-helper";
+import productApi from "../../api/productApi";
+import { NotifyHelper } from "../../helper/notify-helper";
 
 const initialState = {
   requesting: false,
@@ -50,7 +50,7 @@ export const getProductsbySearch = createAsyncThunk(
   "product/getProductsbySearch",
   async (search) => {
     const res = await productApi.getProductsbySearch(search);
-    if(res && res.data.totalCount > 0){
+    if (res && res.data.totalCount > 0) {
       return res;
     }
     return 0;
@@ -92,13 +92,12 @@ const productSlice = createSlice({
         } else {
           state.productList3 = action.payload.data.data;
         }
-      }).addCase(getProductsbySearch.fulfilled, (state, action) => {
+      })
+      .addCase(getProductsbySearch.fulfilled, (state, action) => {
         state.requesting = false;
-        if (Array.isArray(action.payload?.data?.data) ) {
-          state.list = action.payload?.data?.data
-        }
-        else
-          state.list = []
+        if (Array.isArray(action.payload?.data?.data)) {
+          state.list = action.payload?.data?.data;
+        } else state.list = [];
       })
 
       //---------------PENDING & REJECTION---------------

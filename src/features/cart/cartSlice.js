@@ -1,8 +1,8 @@
 /* eslint-disable array-callback-return */
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { NotifyHelper } from "helper/notify-helper";
+import { NotifyHelper } from "../../helper/notify-helper";
 import { fee } from "../../constants/fee";
-import cartApi from "api/cartApi";
+import cartApi from "../../api/cartApi";
 
 const initialState = {
   finalPrices: fee.shipping,
@@ -30,18 +30,6 @@ export const addProductToCart = createAsyncThunk(
     }
   }
 );
-
-// export const changeQuantity = createAsyncThunk(
-//   "cart/changeQuantity",
-//   async (quantity, { rejectWithValue }) => {
-//     try {
-//       const { data } = await cartApi.changeQuantity(quantity);
-//       return data;
-//     } catch (error) {
-//       return rejectWithValue(error.response.data);
-//     }
-//   }
-// );
 
 export const removeProductFromCart = createAsyncThunk(
   "cart/removeProduct",
@@ -90,11 +78,14 @@ const cartSlice = createSlice({
         state.items.push({
           ...payload,
           quantity: 1,
-          totalPrice: payload.price
+          totalPrice: payload.price,
         });
       }
 
-      state.totalPrice = state.items.reduce((prevValue, currValue) => prevValue + currValue.price, 0);
+      state.totalPrice = state.items.reduce(
+        (prevValue, currValue) => prevValue + currValue.price,
+        0
+      );
     },
     changeQuantity: (state, { payload }) => {
       const { id, quantity } = payload;
@@ -106,8 +97,21 @@ const cartSlice = createSlice({
         state.items[index].quantity = quantity;
         state.items[index].totalPrice = newTotalPrice;
 
-        state.totalPrice = state.items.reduce((prevValue, currValue) => prevValue + currValue.price, 0);
+        state.totalPrice = state.items.reduce(
+          (prevValue, currValue) => prevValue + currValue.price,
+          0
+        );
       }
+    },
+    removeFromCart: (state, { payload }) => {
+      const filteredCartItems = state.items.filter(
+        (item) => item.id !== payload
+      );
+      state.items = filteredCartItems;
+      state.totalPrice = filteredCartItems.reduce(
+        (prevValue, currValue) => prevValue + currValue.price,
+        0
+      );
     },
   },
   extraReducers: {
@@ -147,12 +151,14 @@ export const {
   addToCart,
   increment,
   decrement,
-  changeQuantity
+  changeQuantity,
+  removeFromCart,
 } = cartSlice.actions;
 
 export const selectCartItems = (state) => state.cart.items;
 export const selectIsCartFetching = (state) => state.cart.isFetching;
 export const selectTotalPrice = (state) => state.cart.totalPrice;
-export const selectItemInCartById = (state, itemId) => state.cart.items.find((item) => item.id === itemId);
+export const selectItemInCartById = (state, itemId) =>
+  state.cart.items.find((item) => item.id === itemId);
 
 export default cartSlice.reducer;

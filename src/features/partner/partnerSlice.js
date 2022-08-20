@@ -1,8 +1,8 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import provincesApi from 'api/provincesApi';
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import provincesApi from "../../api/provincesApi";
 
 export const fetchProvinces = createAsyncThunk(
-  'partner/fetchProvinces',
+  "partner/fetchProvinces",
   async () => {
     const response = await provincesApi.listProvinces();
     return response.data;
@@ -10,7 +10,7 @@ export const fetchProvinces = createAsyncThunk(
 );
 
 export const fetchDistricts = createAsyncThunk(
-  'partner/fetchDistricts',
+  "partner/fetchDistricts",
   async (provinceCode) => {
     const response = await provincesApi.getDistricts(provinceCode);
     return response.data;
@@ -18,7 +18,7 @@ export const fetchDistricts = createAsyncThunk(
 );
 
 export const fetchWards = createAsyncThunk(
-  'partner/fetchWards',
+  "partner/fetchWards",
   async (districtCode) => {
     const response = await provincesApi.getWards(districtCode);
     return response.data;
@@ -29,66 +29,66 @@ const initialState = {
   data: [
     {
       id: 1,
-      name: 'Tên đối tác 1',
-      email: 'doitac1@gmail.com',
-      categoryName: 'Mặt hàng kinh doanh 1',
+      name: "Tên đối tác 1",
+      email: "doitac1@gmail.com",
+      categoryName: "Mặt hàng kinh doanh 1",
     },
     {
       id: 2,
-      name: 'Tên đối tác 2',
-      email: 'doitac2@gmail.com',
-      categoryName: 'Mặt hàng kinh doanh 2'
+      name: "Tên đối tác 2",
+      email: "doitac2@gmail.com",
+      categoryName: "Mặt hàng kinh doanh 2",
     },
     {
       id: 3,
-      name: 'Tên đối tác 3',
-      email: 'doitac3@gmail.com',
-      categoryName: 'Mặt hàng kinh doanh 3'
+      name: "Tên đối tác 3",
+      email: "doitac3@gmail.com",
+      categoryName: "Mặt hàng kinh doanh 3",
     },
     {
       id: 4,
-      name: 'Tên đối tác 4',
-      email: 'doitac4@gmail.com',
-      categoryName: 'Mặt hàng kinh doanh 4'
+      name: "Tên đối tác 4",
+      email: "doitac4@gmail.com",
+      categoryName: "Mặt hàng kinh doanh 4",
     },
     {
       id: 5,
-      name: 'Tên đối tác 5',
-      email: 'doitac5@gmail.com',
-      categoryName: 'Mặt hàng kinh doanh 5'
+      name: "Tên đối tác 5",
+      email: "doitac5@gmail.com",
+      categoryName: "Mặt hàng kinh doanh 5",
     },
   ],
   products: [
     {
       id: 1,
-      name: 'Bánh Mì',
+      name: "Bánh Mì",
       price: 15000,
-      inStock: 50
+      inStock: 50,
     },
     {
       id: 2,
-      name: 'Cơm Tấm',
+      name: "Cơm Tấm",
       price: 20000,
-      inStock: 10
+      inStock: 10,
     },
     {
       id: 3,
-      name: 'Bánh Bèo',
+      name: "Bánh Bèo",
       price: 15000,
-      inStock: 15
+      inStock: 15,
     },
     {
       id: 4,
-      name: 'Hủ Tiếu',
+      name: "Hủ Tiếu",
       price: 25000,
-      inStock: 50
+      inStock: 50,
     },
     {
       id: 5,
-      name: 'Mì Tôm',
+      name: "Mì Tôm",
       price: 8000,
-      inStock: 50
-    }
+      inStock: 50,
+    },
   ],
   provinces: [],
   districts: [],
@@ -99,7 +99,7 @@ const initialState = {
 };
 
 export const partnerSlice = createSlice({
-  name: 'partner',
+  name: "partner",
   initialState: initialState,
   reducers: {},
   extraReducers: (builder) => {
@@ -142,7 +142,7 @@ export const partnerSlice = createSlice({
 
 export const selectAllPartners = (state) => state.partner.data;
 
-export const selectPartnerById = (state, partnerId) => 
+export const selectPartnerById = (state, partnerId) =>
   state.partner.data.find((partner) => partner.id === partnerId);
 
 export const selectProductsByPartnerId = (state) => state.partner.products;
@@ -151,8 +151,10 @@ export const selectProvinces = (state) => state.partner.provinces;
 export const selectDistricts = (state) => state.partner.districts;
 export const selectWards = (state) => state.partner.wards;
 
-export const selectIsFetchingProvinces = (state) => state.partner.isFetchingProvinces;
-export const selectIsFetchingDistricts = (state) => state.partner.isFetchingDistricts;
+export const selectIsFetchingProvinces = (state) =>
+  state.partner.isFetchingProvinces;
+export const selectIsFetchingDistricts = (state) =>
+  state.partner.isFetchingDistricts;
 export const selectIsFetchingWards = (state) => state.partner.isFetchingWards;
 
 export default partnerSlice.reducer;

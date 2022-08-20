@@ -1,8 +1,8 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import "./styles.scss";
-import PartnerCard from "features/homepage/components/PartnerCard";
-import { selectAllPartners } from "features/partner/partnerSlice";
+import PartnerCard from "./components/PartnerCard";
+import { selectAllPartners } from "../partner/partnerSlice";
 import { Col, Pagination, Row } from "antd";
 
 const HomePage = () => {
@@ -10,19 +10,9 @@ const HomePage = () => {
 
   return (
     <>
-      <Row
-      // style={{
-      //   padding: 24,
-      //   textAlign: 'center',
-      // }}
-        gutter={[0, 16]}
-      >
-        {
-        partners.map((partner) => (
-          <Col
-            key={partner.id}
-            span={6}
-          >
+      <Row gutter={[0, 16]}>
+        {partners.map((partner) => (
+          <Col key={partner.id} span={6}>
             <PartnerCard
               key={partner.id}
               id={partner.id}
@@ -33,18 +23,16 @@ const HomePage = () => {
         ))}
       </Row>
 
-      <div style={{
-        display: 'flex',
-        justifyContent: 'center'
-      }}>
-        <Pagination
-          defaultCurrent={1}
-          pageSize={5}
-          total={20}
-        />
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+        }}
+      >
+        <Pagination defaultCurrent={1} pageSize={5} total={20} />
       </div>
     </>
-  )
+  );
 };
 
 export default HomePage;

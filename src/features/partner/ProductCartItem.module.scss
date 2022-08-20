@@ -1,5 +1,19 @@
 .wrapper {
   display: flex;
   justify-content: space-between;
-  padding: 20px;
+  padding: 20px 0;
+}
+
+.deleteButton {
+  cursor: pointer;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  margin-left: 3px;
+  display: inline-flex;
+  align-items: center;
+
+  > span:first-of-type {
+    margin-right: 3px;
+  }
 }

@@ -1,10 +1,17 @@
 import { Button, Form, Input, Select } from "antd";
-import { PARTNER_ROUTES , CUSTOMER_ROUTES , USER_TYPES, DRIVER_ROUTES, EMPLOYEE_ROUTES, ADMIN_ROUTES } from "../../../../constants";
+import {
+  PARTNER_ROUTES,
+  CUSTOMER_ROUTES,
+  USER_TYPES,
+  DRIVER_ROUTES,
+  EMPLOYEE_ROUTES,
+  ADMIN_ROUTES,
+} from "../../../../constants";
 
-import { fakeLogIn, selectIsLoggedIn, selectUserRole } from "features/auth/authSlice";
+import { fakeLogIn, selectIsLoggedIn, selectUserRole } from "../../authSlice";
 import React, { useEffect } from "react";
-import { useSelector , useDispatch } from "react-redux";
-import { Redirect, useHistory } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { Navigate, useNavigate } from "react-router-dom";
 
 const { Option } = Select;
 
@@ -29,15 +36,15 @@ const formItemLayout = {
 
 const LoginForm = () => {
   const [form] = Form.useForm();
-  const history = useHistory();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const isLoggedIn = useSelector(selectIsLoggedIn);
   const userRole = useSelector(selectUserRole);
 
   const handleFinish = (values) => {
-    const formatValues = { ...values, role: Number(values.role)};
+    const formatValues = { ...values, role: Number(values.role) };
     dispatch(fakeLogIn(formatValues));
-  }
+  };
 
   useEffect(() => {
     form.resetFields();
@@ -58,8 +65,8 @@ const LoginForm = () => {
       dest = CUSTOMER_ROUTES.seeAllPartners;
     }
 
-    return <Redirect to={dest} />
-  };
+    return <Navigate to={dest} replace />;
+  }
 
   return (
     <Form
@@ -110,9 +117,7 @@ const LoginForm = () => {
           },
         ]}
       >
-        <Select
-          placeholder="Chọn quyền"
-        >
+        <Select placeholder="Chọn quyền">
           <Option value="1">Khách hàng</Option>
           <Option value="2">Đối tác</Option>
           <Option value="3">Tài xế</Option>
@@ -120,33 +125,9 @@ const LoginForm = () => {
           <Option value="5">Quản trị</Option>
         </Select>
       </Form.Item>
-      <Form.Item
-        noStyle
-        shouldUpdate={(prevValues, currentValues) => prevValues.gender !== currentValues.gender}
-      >
-        {({ getFieldValue }) =>
-          getFieldValue('gender') === 'other' ? (
-            <Form.Item
-              name="customizeGender"
-              label="Customize Gender"
-              rules={[
-                {
-                  required: true,
-                },
-              ]}
-            >
-              <Input />
-            </Form.Item>
-          ) : null
-        }
-      </Form.Item>
 
       <Form.Item>
-        <Button
-          type="primary"
-          htmlType="submit"
-          className="full-width-button"
-        >
+        <Button type="primary" htmlType="submit" className="full-width-button">
           Đăng nhập
         </Button>
         Chưa có tài khoản?
@@ -154,7 +135,7 @@ const LoginForm = () => {
           type="link"
           htmlType="button"
           onClick={() => {
-            history.push('/register');
+            navigate("/register");
           }}
           style={{ paddingLeft: 5 }}
         >
@@ -163,6 +144,6 @@ const LoginForm = () => {
       </Form.Item>
     </Form>
   );
-}
+};
 
 export default LoginForm;
