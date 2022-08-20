@@ -12,6 +12,7 @@
     "husky": "^7.0.1",
     "less-loader": "^10.0.1",
     "lint-staged": "^11.0.1",
+    "node-polyfill-webpack-plugin": "^2.0.1",
     "node-sass": "^6.0.1",
     "prop-types": "^15.7.2",
     "querystring": "^0.2.1",
