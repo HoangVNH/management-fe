@@ -10,7 +10,6 @@ import {
   selectIsFetchingProvinces,
   selectIsFetchingWards,
   selectPartnerById,
-  selectProductsByPartnerId,
   selectProvinces,
   selectWards,
 } from "./partnerSlice";
@@ -20,6 +19,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import styles from "./Partner.module.scss";
 import { addToCart, selectCartItems } from "../cart/cartSlice";
 import { isValidArray } from "../../utils";
+import { selectProductsList } from "../product/productSlice";
 
 const { TextArea } = Input;
 
@@ -40,7 +40,7 @@ const PartnerDetails = () => {
   const partner = useSelector((state) =>
     selectPartnerById(state, Number(partnerId))
   );
-  const products = useSelector(selectProductsByPartnerId);
+  const products = useSelector(selectProductsList);
   const productsFromCart = useSelector(selectCartItems);
   const provinces = useSelector(selectProvinces);
   const districts = useSelector(selectDistricts);

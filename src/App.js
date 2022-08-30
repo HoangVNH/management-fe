@@ -7,7 +7,12 @@ import LoginPage from "./features/auth/pages/LoginPage";
 import RegisterPage from "./features/auth/pages/RegisterPage";
 import PartnerDetails from "./features/partner/PartnerDetails";
 import RequireAuth from "./components/RequireAuth/RequireAuth";
-import HomePage from "./features/homepage";
+import CustomerHomePage from "./features/homepage/Customer";
+import PartnerHomepage from "./features/homepage/Partner";
+import Contracts from "./features/partner/Contracts";
+import Orders from "./features/partner/Orders";
+import AddProduct from "./features/product/pages/AddProduct";
+import UpdateProduct from "./features/product/pages/UpdateProduct";
 
 function App() {
   return (
@@ -17,11 +22,24 @@ function App() {
         <Route path="register" element={<RegisterPage />} />
 
         <Route element={<RequireAuth />}>
-          <Route path="customer/partners" element={<HomePage />} />
+          <Route
+            path="customer/partners"
+            index
+            element={<CustomerHomePage />}
+          />
           <Route
             path="customer/partners/:partnerId"
             element={<PartnerDetails />}
           />
+
+          <Route path="partner/products" index element={<PartnerHomepage />} />
+          <Route path="partner/products/add-new" element={<AddProduct />} />
+          <Route
+            path="partner/update-product/:productId"
+            element={<UpdateProduct />}
+          />
+          <Route path="partner/contracts" element={<Contracts />} />
+          <Route path="partner/orders" element={<Orders />} />
         </Route>
       </Route>
     </Routes>

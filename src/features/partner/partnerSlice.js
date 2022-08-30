@@ -58,38 +58,6 @@ const initialState = {
       categoryName: "Mặt hàng kinh doanh 5",
     },
   ],
-  products: [
-    {
-      id: 1,
-      name: "Bánh Mì",
-      price: 15000,
-      inStock: 50,
-    },
-    {
-      id: 2,
-      name: "Cơm Tấm",
-      price: 20000,
-      inStock: 10,
-    },
-    {
-      id: 3,
-      name: "Bánh Bèo",
-      price: 15000,
-      inStock: 15,
-    },
-    {
-      id: 4,
-      name: "Hủ Tiếu",
-      price: 25000,
-      inStock: 50,
-    },
-    {
-      id: 5,
-      name: "Mì Tôm",
-      price: 8000,
-      inStock: 50,
-    },
-  ],
   provinces: [],
   districts: [],
   wards: [],
@@ -144,8 +112,6 @@ export const selectAllPartners = (state) => state.partner.data;
 
 export const selectPartnerById = (state, partnerId) =>
   state.partner.data.find((partner) => partner.id === partnerId);
-
-export const selectProductsByPartnerId = (state) => state.partner.products;
 
 export const selectProvinces = (state) => state.partner.provinces;
 export const selectDistricts = (state) => state.partner.districts;

@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, nanoid } from "@reduxjs/toolkit";
 import productApi from "../../api/productApi";
 import { NotifyHelper } from "../../helper/notify-helper";
 
@@ -6,19 +6,9 @@ const initialState = {
   requesting: false,
   success: false,
   message: null,
-  productList1: [],
-  productList2: [],
-  productList3: [],
-  list: [],
+  products: [],
   pagination: {},
-  detail: {
-    id: 0,
-    name: "",
-    sku: "",
-    description: "",
-    price: 0,
-    discount: 0,
-  },
+  details: {},
 };
 
 //----------ACTIONS----------
@@ -26,14 +16,6 @@ export const getProductList = createAsyncThunk(
   "product/getProductList",
   async () => {
     const response = await productApi.getProductList();
-    return response.data;
-  }
-);
-
-export const getProductById = createAsyncThunk(
-  "product/getProductById",
-  async (id) => {
-    const response = await productApi.getProductById(id);
     return response.data;
   }
 );
@@ -71,14 +53,90 @@ const productSlice = createSlice({
     setDataToEmpty: (state) => {
       state.detail = initialState.detail;
     },
+    getProductsListByPartnerId: (state) => {
+      state.products = [
+        {
+          key: nanoid(),
+          id: 1,
+          name: "Bánh Mì",
+          price: 15000,
+          inStock: 50,
+        },
+        {
+          key: nanoid(),
+          id: 2,
+          name: "Cơm Tấm",
+          price: 20000,
+          inStock: 10,
+        },
+        {
+          key: nanoid(),
+          id: 3,
+          name: "Bánh Bèo",
+          price: 15000,
+          inStock: 15,
+        },
+        {
+          key: nanoid(),
+          id: 4,
+          name: "Hủ Tiếu",
+          price: 25000,
+          inStock: 50,
+        },
+        {
+          key: nanoid(),
+          id: 5,
+          name: "Mì Tôm",
+          price: 8000,
+          inStock: 20,
+        },
+        {
+          key: nanoid(),
+          id: 6,
+          name: "Hủ Tiếu",
+          price: 25000,
+          inStock: 50,
+        },
+        {
+          key: nanoid(),
+          id: 7,
+          name: "Mì Tôm",
+          price: 8000,
+          inStock: 20,
+        },
+        {
+          key: nanoid(),
+          id: 8,
+          name: "Hủ Tiếu",
+          price: 25000,
+          inStock: 50,
+        },
+        {
+          key: nanoid(),
+          id: 9,
+          name: "Mì Tôm",
+          price: 8000,
+          inStock: 20,
+        },
+      ];
+    },
+    getProductById: (state, { payload }) => {
+      const index = state.products.findIndex(
+        (product) => product.id === payload
+      );
+
+      if (index !== -1) {
+        state.details = state.products[index];
+      }
+    },
   },
   extraReducers: (builder) => {
     builder
-      .addCase(getProductById.fulfilled, (state, action) => {
-        state.requesting = false;
-        state.success = true;
-        state.detail = action.payload;
-      })
+      // .addCase(getProductById.fulfilled, (state, action) => {
+      //   state.requesting = false;
+      //   state.success = true;
+      //   state.detail = action.payload;
+      // })
       .addCase(getProductList.fulfilled, (state, action) => {
         state.requesting = false;
         state.list = action.payload;
@@ -112,9 +170,10 @@ const productSlice = createSlice({
   },
 });
 
-export const { setDataToEmpty } = productSlice.actions;
+export const { setDataToEmpty, getProductsListByPartnerId, getProductById } =
+  productSlice.actions;
 
-export const selectProduct = (state) => state.product;
-export const selectProductDetail = (state) => state.product.detail;
+export const selectProductsList = (state) => state.product.products;
+export const selectProductDetails = (state) => state.product.details;
 
 export default productSlice.reducer;

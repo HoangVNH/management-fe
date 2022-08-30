@@ -4,7 +4,7 @@ import { selectUserRole } from "../../features/auth/authSlice";
 
 const RequireAuth = () => {
   const location = useLocation();
-  const userRole = useSelector(selectUserRole);
+  const userRole = useSelector(selectUserRole) || localStorage.getItem("role");
 
   return userRole ? (
     <Outlet />

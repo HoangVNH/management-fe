@@ -83,10 +83,18 @@ export const authSlice = createSlice({
       }
 
       state.isLoggedIn = true;
+
+      localStorage.setItem("isLoggedIn", true);
+      localStorage.setItem("role", state.role);
+      localStorage.setItem("email", email);
     },
     fakeLogOut: (state) => {
       state.role = null;
       state.isLoggedIn = false;
+
+      localStorage.removeItem("isLoggedIn");
+      localStorage.removeItem("role");
+      localStorage.removeItem("email");
     },
   },
   // extraReducers: {

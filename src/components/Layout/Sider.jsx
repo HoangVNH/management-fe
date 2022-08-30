@@ -40,6 +40,11 @@ const partnerMenuItems = [
     label: "Hợp đồng",
     link: "/partner/contracts",
   },
+  {
+    icon: SolutionOutlined,
+    label: "Đơn đặt hàng",
+    link: "/partner/orders",
+  },
 ];
 
 const driverMenuItems = [
@@ -95,7 +100,7 @@ const renderMenuItems = (userRole) => {
 
 const MySider = () => {
   const navigate = useNavigate();
-  const userRole = useSelector(selectUserRole);
+  const userRole = useSelector(selectUserRole) || localStorage.getItem("role");
   const renderedMenu = renderMenuItems(userRole);
 
   return (
